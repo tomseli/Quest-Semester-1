@@ -4,7 +4,10 @@ this is a branch of quest project on Hogeschool Utrecht in which we are tasked t
 
 to start programming things on the raspberry pi please read the following guide
 ## Setup guide
-to 
+### 
+
+
+
 
 
 
