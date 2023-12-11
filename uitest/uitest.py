@@ -1,8 +1,33 @@
+from math import sin, pi
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.slider import Slider
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from kivy.garden.graph import Graph, MeshLinePlot
+from kivy.clock import Clock
+import time
+
+
+class MyGraph(BoxLayout):
+    def __init__(self, **kwargs):
+        super(MyGraph, self).__init__(**kwargs)
+        self.orientation = 'vertical'
+        self.graph = Graph(xlabel='Time', ylabel='Y', x_ticks_minor=5,
+                           x_ticks_major=25, y_ticks_major=1,
+                           y_grid_label=True, x_grid_label=True, padding=5,
+                           xlog=False, ylog=False, x_grid=True, y_grid=True,
+                           xmin=-0, xmax=10, ymin=-1, ymax=1)
+        self.plot = MeshLinePlot(color=[1, 0, 0, 1])
+        self.graph.add_plot(self.plot)
+        self.add_widget(self.graph)
+        Clock.schedule_interval(self.update_graph, 1/60.)
+
+    def update_graph(self, dt):
+        self.plot.points = [(x/10., sin(2*pi*(x/10. - time.time()))) for x in range(0, 101)]
+
+
+
 
 class SwitchContainer(BoxLayout):
     def __init__(self, **kwargs):
@@ -52,7 +77,10 @@ class SwitchContainer(BoxLayout):
 
 class MyApp(App):
     def build(self):
-        return SwitchContainer()
+        root = BoxLayout(orientation='horizontal')
+        root.add_widget(SwitchContainer())
+        root.add_widget(MyGraph())
+        return root
 
 if __name__ == '__main__':
     MyApp().run()
