@@ -1,29 +1,29 @@
-<SwitchContainer>:
-    orientation: 'vertical'
-    Button:
-        text: 'Apply Values'
-        on_press: root.on_button_press()
-    Slider:
-        id: slider1
-        min: 0
-        max: 100
-        value: 50
-        on_value: root.on_slider_value(self, self.value)
-    Label:
-        text: f'Slider 1: {slider1.value}'
-    Slider:
-        id: slider2
-        min: 0
-        max: 100
-        value: 50
-        on_value: root.on_slider_value(self, self.value)
-    Label:
-        text: f'Slider 2: {slider2.value}'
-    Slider:
-        id: slider3
-        min: 0
-        max: 100
-        value: 50
-        on_value: root.on_slider_value(self, self.value)
-    Label:
-        text: f'Slider 3: {slider3.value}'
+<TabbedPanel>:
+    do_default_tab: False
+    tab_pos: 'right_mid'
+
+    TabbedPanelItem:
+        text: 'Settings'
+        BoxLayout:
+            orientation: 'vertical'
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+
+    TabbedPanelItem:
+        text: 'Current Page'
+        Label:
+            text: 'This is the current page.'
+
+    TabbedPanelItem:
+        text: 'Graphs'
+        MyGraph:

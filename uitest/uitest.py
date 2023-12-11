@@ -1,12 +1,58 @@
-from math import sin, pi
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.slider import Slider
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
+from kivy.uix.tabbedpanel import TabbedPanelHeader
 from kivy.garden.graph import Graph, MeshLinePlot
 from kivy.clock import Clock
+from math import sin, pi
 import time
+
+
+
+class MyApp(App):
+    def build(self):
+        tabbed_panel = TabbedPanel(do_default_tab=False, tab_pos='left_mid')
+        self.current_tab_label = Label(text='')
+        self.previous_tab = None
+
+        # Bind the on_tab_switch event to the update_current_tab function
+        tabbed_panel.bind(on_tab_switch=self.update_current_tab)
+
+        # Settings tab
+        settings_tab = TabbedPanelHeader(text='Settings')
+        settings_tab.content = BoxLayout(orientation='vertical')
+        settings_tab.content.add_widget(Slider(min=0, max=100, value=50))
+        settings_tab.content.add_widget(Slider(min=0, max=100, value=50))
+        settings_tab.content.add_widget(Slider(min=0, max=100, value=50))
+        tabbed_panel.add_widget(settings_tab)
+
+        # Graphs tab
+        graphs_tab = TabbedPanelHeader(text='Graphs')
+        graphs_tab.content = MyGraph()
+        tabbed_panel.add_widget(graphs_tab)
+
+        # Add the current_tab_label to the tabbed_panel
+        tabbed_panel.add_widget(self.current_tab_label)
+
+        return tabbed_panel
+
+    def update_current_tab(self, instance, value):
+        self.current_tab_label.text = 'Current tab: ' + value.text
+        if self.previous_tab:
+            self.previous_tab.background_color = [0, 0, 0.8, 1]
+        value.background_color = [1, 0, 0, 1]
+        self.previous_tab = value
+
+    def update_current_tab(self, instance, value):
+        self.current_tab_label.text = 'Current tab: ' + value.text
+        if self.previous_tab:
+            self.previous_tab.background_color = [0, 0, 0.8, 1]
+        value.background_color = [1, 0, 0, 1]
+        self.previous_tab = value
+
 
 
 class MyGraph(BoxLayout):
@@ -75,12 +121,12 @@ class SwitchContainer(BoxLayout):
         elif instance == self.slider3:
             self.label3.text = f'Slider 3: {value}'
 
-class MyApp(App):
-    def build(self):
-        root = BoxLayout(orientation='horizontal')
-        root.add_widget(SwitchContainer())
-        root.add_widget(MyGraph())
-        return root
+#class MyApp(App):
+ #   def build(self):
+  #      root = BoxLayout(orientation='horizontal')
+   #     root.add_widget(SwitchContainer())
+    #    root.add_widget(MyGraph())
+     #   return root
 
 if __name__ == '__main__':
     MyApp().run()
