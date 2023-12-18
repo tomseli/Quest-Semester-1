@@ -17,4 +17,8 @@ https://kivy.org/doc/stable/gettingstarted/rules.html
 
 ### fix for raspberry pi 
 export DISPLAY=:0  # Assuming the display is at :0
-python3 /home/admin/Quest/src/pingpong.py
+python3 /home/admin/Quest/src/test/uitest.py
+
+### things to be added
+- Pinchable graph scaling
+- 

@@ -1,0 +1,29 @@
+<TabbedPanel>:
+    do_default_tab: False
+    tab_pos: 'right_mid'
+
+    TabbedPanelItem:
+        text: 'Settings'
+        BoxLayout:
+            orientation: 'vertical'
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+            Slider:
+                min: 0
+                max: 100
+                value: 50
+
+    TabbedPanelItem:
+        text: 'Current Page'
+        Label:
+            text: 'This is the current page.'
+
+    TabbedPanelItem:
+        text: 'Graphs'
+        MyGraph:
