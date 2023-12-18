@@ -9,6 +9,8 @@ from kivy.properties import NumericProperty
 from kivy.clock import Clock
 import math
 
+
+
 class MyGraph(Graph):
     x_scale = NumericProperty(1)
     y_scale = NumericProperty(1)
@@ -111,6 +113,10 @@ class MyApp(App):
     def update_slider3_label(self, instance, value):
         self.slider3_label.text = f'{value} ({instance.min}-{instance.max})'
     def apply_settings(self, instance):
+        
+
+
+
         print('Slider 1 value:', self.slider1.value)
         print('Slider 2 value:', self.slider2.value)
         print('Slider 3 value:', self.slider3.value)
