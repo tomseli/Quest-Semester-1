@@ -39,9 +39,10 @@ class MyApp(App):
         settings_tab = TabbedPanelHeader(text='Settings')
         settings_layout = BoxLayout(orientation='vertical')
 
-        self.slider1 = Slider(min=0, max=100, value=50)
-        self.slider2 = Slider(min=0, max=100, value=50)
-        self.slider3 = Slider(min=0, max=100, value=50)
+        self.slider1 = Slider(min=0, max=100, step=1, 
+                              value=50)
+        self.slider2 = Slider(min=0, max=100, step=1, value=50)
+        self.slider3 = Slider(min=0, max=100, step=1, value=50)
 
         self.slider1_label = Label(text=f'{self.slider1.value} ({self.slider1.min}-{self.slider1.max})')
         self.slider2_label = Label(text=f'{self.slider2.value} ({self.slider2.min}-{self.slider2.max})')
