@@ -3,7 +3,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelHeader
 from kivy.uix.button import Button
 from kivy.uix.slider import Slider
+from kivy.uix.switch import Switch
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
+from kivy.core.window import Window
+from kivy.graphics import Color, Rectangle
 from kivy.garden.graph import Graph, MeshLinePlot
 from kivy.properties import NumericProperty
 from kivy.clock import Clock
@@ -33,46 +37,60 @@ class MyGraph(Graph):
 
 class MyApp(App):
     def build(self):
+        Window.clearcolor = (0.15, 0.15, 0.15, 1)  # Dark background
+
         tabbed_panel = TabbedPanel(do_default_tab=False, tab_pos='left_mid')
 
-        # Settings tab
+        # Settings tab    
         settings_tab = TabbedPanelHeader(text='Settings')
         settings_layout = BoxLayout(orientation='vertical')
 
-        self.slider1 = Slider(min=0, max=100, step=1, 
-                              value=50)
-        self.slider2 = Slider(min=0, max=100, step=1, value=50)
-        self.slider3 = Slider(min=0, max=100, step=1, value=50)
+        # Add a placeholder graph at the top right
+        graph_layout = BoxLayout(orientation='horizontal', size_hint=(0.75, 1))
+        placeholder_graph = Graph(xlabel='X', ylabel='Y', x_ticks_minor=5,
+                                x_ticks_major=25, y_ticks_major=1,
+                                y_grid_label=True, x_grid_label=True, padding=5,
+                                xlog=False, ylog=False, x_grid=True, y_grid=True, xmin=-0, xmax=100, ymin=-1, ymax=1)
+        plot = MeshLinePlot(color=[1, 0, 0, 1])
+        plot.points = [(x, 0) for x in range(0, 101)]
+        placeholder_graph.add_plot(plot)
+        graph_layout.add_widget(placeholder_graph)
+        settings_layout.add_widget(graph_layout)        
 
+        # Add slider 1
+        self.slider1 = Slider(min=0, max=100, step=1, value=50)
         self.slider1_label = Label(text=f'{self.slider1.value} ({self.slider1.min}-{self.slider1.max})')
-        self.slider2_label = Label(text=f'{self.slider2.value} ({self.slider2.min}-{self.slider2.max})')
-        self.slider3_label = Label(text=f'{self.slider3.value} ({self.slider3.min}-{self.slider3.max})')
-
         self.slider1.bind(value=self.update_slider1_label)
-        self.slider2.bind(value=self.update_slider2_label)
-        self.slider3.bind(value=self.update_slider3_label)
 
         settings_layout.add_widget(self.slider1)
         settings_layout.add_widget(self.slider1_label)
-        settings_layout.add_widget(self.slider2)
-        settings_layout.add_widget(self.slider2_label)
-        settings_layout.add_widget(self.slider3)
-        settings_layout.add_widget(self.slider3_label)
 
-        apply_button = Button(text='Apply Settings')
-        apply_button.bind(on_release=self.apply_settings)
+        # Add switches
+        self.switch1 = Switch(active=False)
+        self.switch1_label = Label(text='Borst of buik')
+        self.switch2 = Switch(active=False)
+        self.switch2_label = Label(text='Instructie en zonder')
 
-        settings_layout.add_widget(apply_button)
+
+        # layout switches
+        settings_layout.add_widget(self.switch1_label)
+        settings_layout.add_widget(self.switch1)
+        settings_layout.add_widget(self.switch2_label)
+        settings_layout.add_widget(self.switch2)
+
+        # Start stop button
+        start_stop_button = Button(text='Start or Stop')
+        start_stop_button.bind(on_release=self.start_stop)
+        
+        #layout start stop button
+        settings_layout.add_widget(start_stop_button)
 
         settings_tab.content = settings_layout
-        tabbed_panel.add_widget(settings_tab)
-
+        tabbed_panel.add_widget(settings_tab)        
 
         # Graphs tab
         graphs_tab = TabbedPanelHeader(text='Graphs')
-
         self.graph = MyGraph()
-       # self.graph.size_hint = (1, 1)
 
         # Create a BoxLayout to contain the slider and the graph
         graph_layout = BoxLayout(orientation='horizontal')
@@ -113,14 +131,17 @@ class MyApp(App):
 
     def update_slider3_label(self, instance, value):
         self.slider3_label.text = f'{value} ({instance.min}-{instance.max})'
-    def apply_settings(self, instance):
+    
+    def start_stop(self, instance):
+        if instance.text == 'Start':
+            instance.text = 'Stop'
+        else:
+            instance.text = 'Start'
         
 
 
 
         print('Slider 1 value:', self.slider1.value)
-        print('Slider 2 value:', self.slider2.value)
-        print('Slider 3 value:', self.slider3.value)
 
 if __name__ == '__main__':
     MyApp().run()
